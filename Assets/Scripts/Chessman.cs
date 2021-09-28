@@ -68,10 +68,12 @@ public class Chessman : MonoBehaviour
     }
     private void OnMouseUp()
     {
-        //Remove all moveplates relating to previously selected piece
-        DestroyMovePlates();
-        //Create new MovePlates
-        InitiateMovePlates();
+        if (!controller.GetComponent<Game>().IsGameOver() && controller.GetComponent<Game>().GetCurrentPlayer() == player)
+        {
+            DestroyMovePlates();
+            InitiateMovePlates();
+        }
+        
     }
     public void DestroyMovePlates()
     {
