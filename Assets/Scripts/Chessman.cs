@@ -256,4 +256,11 @@ public class Chessman : MonoBehaviour
         mpScript.SetReference(gameObject);
         mpScript.SetCoords(matrixX, matrixY);
     }
+    public void Castle(string side, string color)
+    {
+        if (side == "queen" && color == "white")
+        {
+
+        }
+    }
 }
