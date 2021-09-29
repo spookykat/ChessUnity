@@ -43,28 +43,38 @@ public class MenuController : MonoBehaviour
     [Header("Resolution Dropdowns")]
     public TMP_Dropdown resolutionDropdown;
     private Resolution[] resolutions;
+    private Resolution SelectedResolution;
+    void ResolutionValue(TMP_Dropdown change)
+    {
+        SelectedResolution = resolutions[change.value];
+    }
 
     private void Start()
     {
-        resolutions = Screen.resolutions;
-        resolutionDropdown.ClearOptions();
+        //Screen.SetResolution(1920, 1080, true);
+        //Harcoded voor emergency
+          resolutions = Screen.resolutions;
+          resolutionDropdown.ClearOptions();
 
-        List<string> options = new List<string>();
-        int currentResolutionIndex = 0;
-        
-        for (int i = 0; i < resolutions.Length; i++)
-        {
-            string option = resolutions[i].width + " x " + resolutions[i].height;
-            options.Add(option);
+          List<string> options = new List<string>();
+          int currentResolutionIndex = 0;
 
-            if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
-            {
-                currentResolutionIndex = i;
-            }
-        }
-        resolutionDropdown.AddOptions(options);
-        resolutionDropdown.value = currentResolutionIndex;
-        resolutionDropdown.RefreshShownValue();
+          for (int i = 0; i < resolutions.Length; i++)
+          {
+              string option = resolutions[i].width + " x " + resolutions[i].height;
+              options.Add(option);
+
+              if (resolutions[i].width == Screen.width && resolutions[i].height == Screen.height)
+              {
+                  currentResolutionIndex = i;
+              }
+          }
+          resolutionDropdown.AddOptions(options);
+          resolutionDropdown.value = currentResolutionIndex;
+          resolutionDropdown.RefreshShownValue();
+        resolutionDropdown.onValueChanged.AddListener(delegate {
+            ResolutionValue(resolutionDropdown);
+        });
     }
 
     public void SetResolution(int resolutionIndex)
@@ -118,6 +128,8 @@ public class MenuController : MonoBehaviour
         PlayerPrefs.SetInt("masterFullscreen", (_isFullScreen ? 1 : 0));
         Screen.fullScreen = _isFullScreen;
 
+        Screen.SetResolution(SelectedResolution.width, SelectedResolution.height, true);
+        
         StartCoroutine(ConfirmationBox());
     }
 
