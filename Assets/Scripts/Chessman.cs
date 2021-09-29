@@ -15,6 +15,8 @@ public class Chessman : MonoBehaviour
     public Sprite black_queen, black_knight, black_bishop, black_king, black_rook, black_pawn;
     public Sprite white_queen, white_knight, white_bishop, white_king, white_rook, white_pawn;
 
+    public bool hasMoved = false;
+
     public void Activate()
     {
         controller = GameObject.FindGameObjectWithTag("GameController");
@@ -34,6 +36,10 @@ public class Chessman : MonoBehaviour
             case "white_rook": this.GetComponent<SpriteRenderer>().sprite = white_rook; player = "white"; break;
             case "white_pawn": this.GetComponent<SpriteRenderer>().sprite = white_pawn; player = "white"; break;
         }
+    }
+    public void Moved()
+    {
+        hasMoved = true;
     }
     public void SetCoords()
     {
@@ -122,10 +128,10 @@ public class Chessman : MonoBehaviour
                 LineMovePlate(0, -1);
                 break;
             case "black_pawn":
-                PawnMovePlate(xBoard, yBoard - 1);
+                PawnMovePlate(xBoard, yBoard - 1, "black");
                 break;
             case "white_pawn":
-                PawnMovePlate(xBoard, yBoard + 1);
+                PawnMovePlate(xBoard, yBoard + 1, "white");
                 break;
         }
     }
@@ -166,6 +172,7 @@ public class Chessman : MonoBehaviour
         PointMovePlate(xBoard + 1, yBoard + 0);
         PointMovePlate(xBoard + 1, yBoard - 1);
         PointMovePlate(xBoard + 1, yBoard + 1);
+
     }
     public void PointMovePlate(int x, int y)
     {
@@ -183,7 +190,7 @@ public class Chessman : MonoBehaviour
             }
         }
     }
-    public void PawnMovePlate(int x, int y)
+    public void PawnMovePlate(int x, int y, string player)
     {
         Game sc = controller.GetComponent<Game>();
         if (sc.PositionOnBoard(x, y))
@@ -201,6 +208,16 @@ public class Chessman : MonoBehaviour
             y).GetComponent<Chessman>().player != player)
             {
                 MovePlateAttackSpawn(x - 1, y);
+            }
+            if (player == "white" && y -1 == 1)
+            {
+                MovePlateSpawn(x, y + 1);
+
+            }
+            if (player == "black" && y +1 == 6)
+            {
+                MovePlateSpawn(x, y - 1);
+
             }
         }
     }
