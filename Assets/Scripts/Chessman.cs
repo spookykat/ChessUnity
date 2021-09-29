@@ -209,12 +209,12 @@ public class Chessman : MonoBehaviour
             {
                 MovePlateAttackSpawn(x - 1, y);
             }
-            if (player == "white" && y -1 == 1)
+            if (player == "white" && y -1 == 1 && sc.GetPosition(x, y +1) == null)
             {
                 MovePlateSpawn(x, y + 1);
 
             }
-            if (player == "black" && y +1 == 6)
+            if (player == "black" && y +1 == 6 && sc.GetPosition(x,y-1) == null)
             {
                 MovePlateSpawn(x, y - 1);
 
